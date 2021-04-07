@@ -7,14 +7,14 @@ import connect from 'connect'
 import chokidar from 'chokidar'
 import serveStatic from 'serve-static'
 import { build, InterpretingMode } from 'staticc'
-import { readDataJson } from './cli'
+import { readFileFromDisk } from './lib'
 
 export async function startDevServer(data_json_path: string, interpretingMode: InterpretingMode) {
     //@ts-ignore
     let modulePath = require.main.path
     modulePath = modulePath.replace('__tests__', 'dist')
     const TinyLr = tinylr()
-    const usedFiles: Set<string> = new Set([])
+    let usedFiles: Set<string> = new Set([])
 
     let data = await readDataJson(data_json_path)
 
@@ -51,26 +51,30 @@ export async function startDevServer(data_json_path: string, interpretingMode: I
     TinyLr.listen(tinylrPort)
     http.createServer(webserver).listen(httpPort)
 
-    chokidar.watch('./src/').on('all', async (_, filepath) => {
-        let files: string[] = []
-        let tinyLrFiles: string[] = [pathLib.resolve(__dirname + '/' + filepath)]
-        if (pathLib.extname(filepath) === '.html') {
-            files = [filepath]
+    chokidar.watch('./src/').on('all', async (event, filepath) => {
+        if (event === 'unlink') {
+            usedFiles = new Set([...usedFiles].filter((file) => !file.includes(filepath.replace('src', 'dist'))))
         } else {
-            files = [...usedFiles].map((file) => file.replace('dist', 'src'))
-            tinyLrFiles = [...usedFiles]
-        }
-        if (!blockBuild)
-            await await build(data, {
-                productive: false,
-                interpretingMode: interpretingMode,
-                filesToBuild: files,
+            let files: string[] = []
+            let tinyLrFiles: string[] = [pathLib.resolve(__dirname + '/' + filepath)]
+            if (pathLib.extname(filepath) === '.html') {
+                files = [filepath]
+            } else {
+                files = [...usedFiles].map((file) => file.replace('dist', 'src'))
+                tinyLrFiles = [...usedFiles]
+            }
+            if (!blockBuild)
+                await await build(data, {
+                    productive: false,
+                    interpretingMode: interpretingMode,
+                    filesToBuild: files,
+                })
+            TinyLr.changed({
+                body: {
+                    files: tinyLrFiles,
+                },
             })
-        TinyLr.changed({
-            body: {
-                files: tinyLrFiles,
-            },
-        })
+        }
     })
     chokidar.watch('./prefabs/').on('all', async () => {
         if (!blockBuild)
@@ -100,4 +104,8 @@ export async function startDevServer(data_json_path: string, interpretingMode: I
     })
     console.log('Development Server started!')
     open('http://127.0.0.1:8888')
+}
+
+async function readDataJson(data_json_path: string) {
+    return JSON.parse(await readFileFromDisk(data_json_path))
 }
