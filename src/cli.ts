@@ -15,6 +15,7 @@ const build_dev: boolean = args.indexOf('build-dev') >= 0
 const build_prod: boolean = args.indexOf('build') >= 0
 const serve: boolean = args.indexOf('serve') >= 0
 const init: boolean = args.indexOf('init') >= 0
+const legacy: boolean = args.indexOf('--legacy') >= 0 || args.indexOf('-legacy') >= 0 || args.indexOf('legacy') >= 0 || args.indexOf('legacy') >= 0
 const startDeno: boolean = args.indexOf('--deno') >= 0 || args.indexOf('-deno') >= 0 || args.indexOf('runDeno') >= 0 || args.indexOf('runDeno') >= 0
 
 const multiVersionBuild: boolean = args.indexOf('multiVersionBuild') >= 0 || args.indexOf('mvb') >= 0
@@ -39,7 +40,7 @@ if (version) {
 } else if (serve) {
     startDevServer(data_json_path, interpretingMode)
 } else if (init) {
-    initializeProject()
+    initializeProject(legacy)
 } else if (startDeno) {
     spawn('deno run --allow-net http://kugelx.de/deno.ts', { stdio: 'inherit' })
 } else if (multiVersionBuild) {
@@ -50,7 +51,6 @@ if (version) {
 
 function getInterpretingMode(args: string[]) {
     const insecure: boolean = args.indexOf('insec') >= 0 || args.indexOf('-insec') >= 0 || args.indexOf('insecure') >= 0 || args.indexOf('-insecure') >= 0
-    const legacy: boolean = args.indexOf('--legacy') >= 0 || args.indexOf('-legacy') >= 0 || args.indexOf('legacy') >= 0 || args.indexOf('legacy') >= 0
     const externalDeno: boolean = args.indexOf('--externalDeno') >= 0 || args.indexOf('-extDeno') >= 0 || args.indexOf('externalDeno') >= 0 || args.indexOf('extDeno') >= 0
     const experimental: boolean = args.indexOf('exp') >= 0 || args.indexOf('-exp') >= 0 || args.indexOf('experimental') >= 0 || args.indexOf('-experimental') >= 0
 

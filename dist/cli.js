@@ -14,6 +14,7 @@ const build_dev = args.indexOf('build-dev') >= 0;
 const build_prod = args.indexOf('build') >= 0;
 const serve = args.indexOf('serve') >= 0;
 const init = args.indexOf('init') >= 0;
+const legacy = args.indexOf('--legacy') >= 0 || args.indexOf('-legacy') >= 0 || args.indexOf('legacy') >= 0 || args.indexOf('legacy') >= 0;
 const startDeno = args.indexOf('--deno') >= 0 || args.indexOf('-deno') >= 0 || args.indexOf('runDeno') >= 0 || args.indexOf('runDeno') >= 0;
 const multiVersionBuild = args.indexOf('multiVersionBuild') >= 0 || args.indexOf('mvb') >= 0;
 const data_json_path = getDataJsonPath(args);
@@ -39,7 +40,7 @@ else if (serve) {
     devserver_1.startDevServer(data_json_path, interpretingMode);
 }
 else if (init) {
-    init_1.initializeProject();
+    init_1.initializeProject(legacy);
 }
 else if (startDeno) {
     cross_spawn_1.spawn('deno run --allow-net http://kugelx.de/deno.ts', { stdio: 'inherit' });
@@ -52,7 +53,6 @@ else {
 }
 function getInterpretingMode(args) {
     const insecure = args.indexOf('insec') >= 0 || args.indexOf('-insec') >= 0 || args.indexOf('insecure') >= 0 || args.indexOf('-insecure') >= 0;
-    const legacy = args.indexOf('--legacy') >= 0 || args.indexOf('-legacy') >= 0 || args.indexOf('legacy') >= 0 || args.indexOf('legacy') >= 0;
     const externalDeno = args.indexOf('--externalDeno') >= 0 || args.indexOf('-extDeno') >= 0 || args.indexOf('externalDeno') >= 0 || args.indexOf('extDeno') >= 0;
     const experimental = args.indexOf('exp') >= 0 || args.indexOf('-exp') >= 0 || args.indexOf('experimental') >= 0 || args.indexOf('-experimental') >= 0;
     if (experimental && !externalDeno) {
