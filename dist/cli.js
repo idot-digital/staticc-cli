@@ -102,7 +102,12 @@ async function buildMultipleVersions(data_json_path, interpretingMode) {
     const singleData = await readDataJson(data_json_path);
     const [error, multiData] = await lib_1.trycatchasync(readDataJson, 'multidata.json');
     if (error) {
-        console.error('Could not find multidata.json.');
+        if (error instanceof SyntaxError) {
+            console.error('Error parsing multidata.json!');
+        }
+        else {
+            console.error('Could not read multidata.json.');
+        }
         process.exit();
     }
     multiData.forEach((dataVersion) => {
