@@ -6,7 +6,7 @@ import { execSync } from 'child_process'
 const version = require('../package.json').version
 
 export async function initializeProject(legacy: boolean) {
-    console.log('\n\nInitializing staticc project!\n\n')
+    console.info('\n\nInitializing staticc project!\n\n')
     const files = legacy ? legacyInitFiles : initFiles
     Object.keys(files).forEach(async (filepath) => {
         await saveFileToDisk(filepath, files[filepath])
@@ -24,10 +24,10 @@ export async function initializeProject(legacy: boolean) {
     }
     childProcess.stdout.setEncoding('utf8')
     childProcess.stdout.on('data', (chunk: any) => {
-        console.log(chunk)
+        console.info(chunk)
     })
     childProcess.on('close', () => {
-        console.log('Finished!')
+        console.info('Finished!')
     })
 }
 

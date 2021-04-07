@@ -104,7 +104,7 @@ async function startDevServer(data_json_path, interpretingMode) {
             },
         });
     });
-    console.log('Development Server started!');
+    console.info('Development Server started!');
     open_1.default('http://127.0.0.1:8888');
 }
 exports.startDevServer = startDevServer;

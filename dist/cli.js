@@ -49,7 +49,7 @@ else if (multiVersionBuild) {
     buildMultipleVersions(data_json_path, interpretingMode);
 }
 else {
-    console.log('Use -h or --help for help!');
+    console.info('Use -h or --help for help!');
 }
 function getInterpretingMode(args) {
     const insecure = args.indexOf('insec') >= 0 || args.indexOf('-insec') >= 0 || args.indexOf('insecure') >= 0 || args.indexOf('-insecure') >= 0;
@@ -82,20 +82,20 @@ function getDataJsonPath(args) {
 }
 function printVersion() {
     const package_info = require('../package.json');
-    console.log(package_info.version);
+    console.info(package_info.version);
 }
 exports.printVersion = printVersion;
 function printHelpText() {
-    console.log('\n');
-    console.log('Usage: staticc <command>\n');
-    console.log('where: <command> is one of:');
-    console.log('v                alias for version');
-    console.log('version          shows the version of the staticc-cli');
-    console.log('build            creates a production build of all html files');
-    console.log('build-dev        creates a development build of all html files');
-    console.log('serve            starts a development webserver');
-    console.log('init             initializes a new staticc project\n');
-    console.log('Visit https://idot-digital.github.io/staticc/ to learn more about staticc.');
+    console.info('\n');
+    console.info('Usage: staticc <command>\n');
+    console.info('where: <command> is one of:');
+    console.info('v                alias for version');
+    console.info('version          shows the version of the staticc-cli');
+    console.info('build            creates a production build of all html files');
+    console.info('build-dev        creates a development build of all html files');
+    console.info('serve            starts a development webserver');
+    console.info('init             initializes a new staticc project\n');
+    console.info('Visit https://idot-digital.github.io/staticc/ to learn more about staticc.');
 }
 exports.printHelpText = printHelpText;
 async function buildMultipleVersions(data_json_path, interpretingMode) {

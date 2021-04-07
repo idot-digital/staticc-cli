@@ -9,7 +9,7 @@ const lib_1 = require("./lib");
 const child_process_1 = require("child_process");
 const version = require('../package.json').version;
 async function initializeProject(legacy) {
-    console.log('\n\nInitializing staticc project!\n\n');
+    console.info('\n\nInitializing staticc project!\n\n');
     const files = legacy ? legacyInitFiles : initFiles;
     Object.keys(files).forEach(async (filepath) => {
         await lib_1.saveFileToDisk(filepath, files[filepath]);
@@ -30,10 +30,10 @@ async function initializeProject(legacy) {
     }
     childProcess.stdout.setEncoding('utf8');
     childProcess.stdout.on('data', (chunk) => {
-        console.log(chunk);
+        console.info(chunk);
     });
     childProcess.on('close', () => {
-        console.log('Finished!');
+        console.info('Finished!');
     });
 }
 exports.initializeProject = initializeProject;

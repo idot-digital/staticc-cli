@@ -102,7 +102,7 @@ export async function startDevServer(data_json_path: string, interpretingMode: I
             },
         })
     })
-    console.log('Development Server started!')
+    console.info('Development Server started!')
     open('http://127.0.0.1:8888')
 }
 
