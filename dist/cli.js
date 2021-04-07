@@ -58,7 +58,7 @@ function getInterpretingMode(args) {
     if (experimental && !externalDeno) {
         return staticc_1.InterpretingMode.experimental;
     }
-    else if (experimental && externalDeno) {
+    else if (externalDeno) {
         return staticc_1.InterpretingMode.localDeno;
     }
     else if (insecure) {

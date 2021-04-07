@@ -56,7 +56,7 @@ function getInterpretingMode(args: string[]) {
 
     if (experimental && !externalDeno) {
         return InterpretingMode.experimental
-    } else if (experimental && externalDeno) {
+    } else if (externalDeno) {
         return InterpretingMode.localDeno
     } else if (insecure) {
         return InterpretingMode.insecure
