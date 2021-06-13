@@ -100,13 +100,18 @@ function printHelpText() {
 exports.printHelpText = printHelpText;
 async function buildMultipleVersions(data_json_path, interpretingMode) {
     const singleData = await readDataJson(data_json_path);
-    const [error, multiData] = await lib_1.trycatchasync(readDataJson, 'multidata.json');
+    const index = args.indexOf('mvb') !== -1 ? args.indexOf('mvb') : args.indexOf('multiVersionBuild');
+    const htmlFile = args[index + 1];
+    const multiVersionData = args[index + 2].includes(".json") ? args[index + 2] : 'multidata.json';
+    console.log(htmlFile);
+    console.log(multiVersionData);
+    const [error, multiData] = await lib_1.trycatchasync(readDataJson, multiVersionData);
     if (error) {
         if (error instanceof SyntaxError) {
-            console.error('Error parsing multidata.json!');
+            console.error(`Error parsing ${multiVersionData}.`);
         }
         else {
-            console.error('Could not read multidata.json.');
+            console.error(`Could not read ${multiVersionData}.`);
         }
         process.exit();
     }
@@ -115,15 +120,11 @@ async function buildMultipleVersions(data_json_path, interpretingMode) {
         staticc_1.build(data, {
             productive: true,
             interpretingMode: interpretingMode,
-            filesToBuild: getMultiVersionFiles(),
+            filesToBuild: [htmlFile],
             sourceFolder: 'src',
             buildFolder: 'dist',
         });
     });
-}
-function getMultiVersionFiles() {
-    const buildableFiles = staticc_1.getAllBuildableFiles('src');
-    return buildableFiles.filter((filename) => filename.charAt(0) === '#');
 }
 async function readDataJson(data_json_path) {
     return JSON.parse(await lib_1.readFileFromDisk(data_json_path));

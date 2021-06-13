@@ -96,30 +96,34 @@ export function printHelpText() {
 
 async function buildMultipleVersions(data_json_path: string, interpretingMode: InterpretingMode) {
     const singleData = await readDataJson(data_json_path)
-    const [error, multiData] = await trycatchasync(readDataJson, 'multidata.json')
+
+    const index = args.indexOf('mvb') !== -1 ? args.indexOf('mvb') : args.indexOf('multiVersionBuild')
+    const htmlFile = args[index + 1]
+    const multiVersionData = args[index + 2].includes(".json") ? args[index + 2] : 'multidata.json' 
+
+    console.log(htmlFile)
+    console.log(multiVersionData)
+
+    const [error, multiData] = await trycatchasync(readDataJson, multiVersionData)
     if (error) {
         if (error instanceof SyntaxError) {
-            console.error('Error parsing multidata.json!')
+            console.error(`Error parsing ${multiVersionData}.`)
         } else {
-            console.error('Could not read multidata.json.')
+            console.error(`Could not read ${multiVersionData}.`)
         }
         process.exit()
     }
+
     multiData.forEach((dataVersion: any) => {
         const data = { ...singleData, ...dataVersion }
-        build(data, {
-            productive: true,
-            interpretingMode: interpretingMode,
-            filesToBuild: getMultiVersionFiles(),
-            sourceFolder: 'src',
-            buildFolder: 'dist',
-        })
+            build(data, {
+                productive: true,
+                interpretingMode: interpretingMode,
+                filesToBuild: [htmlFile],
+                sourceFolder: 'src',
+                buildFolder: 'dist',
+            })
     })
-}
-
-function getMultiVersionFiles() {
-    const buildableFiles = getAllBuildableFiles('src')
-    return buildableFiles.filter((filename) => filename.charAt(0) === '#')
 }
 
 export async function readDataJson(data_json_path: string) {
