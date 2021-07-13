@@ -4239,9 +4239,10 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-"staticc@https://github.com/idot-digital/staticc.git":
-  version "0.8.4"
-  resolved "https://github.com/idot-digital/staticc.git#70a262801a0a8d0082529c8f90492476ce6b7c6d"
+staticc@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/staticc/-/staticc-0.8.5.tgz#7998a9339a4fb326bacb5ab0419d8bd93b3295a6"
+  integrity sha512-qZ4Oh6cz7osCjsrajLcT4JUYTpXWmiY6557cnr0rwhnKSrEG0l2QuOWaswzVo1Q4eDFtn2AxNxQdp944WNiTtQ==
   dependencies:
     fs-extra "^9.0.1"
     glob "^7.1.6"
